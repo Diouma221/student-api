@@ -16,6 +16,11 @@ pipeline {
                 bat 'mvn clean package -DskipTests'
             }
         }
+        stage('Lint') {
+            steps {
+                bat 'mvn checkstyle:check'
+            }
+        }
         stage('Tests Unitaires') {
             steps {
                 bat 'mvn test'
@@ -33,22 +38,6 @@ pipeline {
             post {
                 always {
                     jacoco(
-                        execPattern:   'target/*.exec',
-                        classPattern:  'target/classes',
+                        execPattern: 'target/*.exec',
+                        classPattern: 'target/classes',
                         sourcePattern: 'src/main/java'
-                    )
-                }
-            }
-        }
-        stage('Archivage') {
-            steps {
-                archiveArtifacts artifacts:    'target/*.jar',
-                                 fingerprint: true
-            }
-        }
-    }
-    post {
-        success { echo 'Pipeline reussi avec succes !'         }
-        failure { echo 'Pipeline echoue -- consultez les logs.' }
-    }
-}
