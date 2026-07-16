@@ -1,8 +1,7 @@
 pipeline {
     agent any
-    tools { 
+    tools {
         maven 'Maven-3.9'
-        
         jdk   'JDK-17'
     }
     stages {
@@ -42,3 +41,18 @@ pipeline {
                         execPattern: 'target/*.exec',
                         classPattern: 'target/classes',
                         sourcePattern: 'src/main/java'
+                    )
+                }
+            }
+        }
+        stage('Archivage') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
+    }
+    post {
+        success { echo 'Pipeline reussi avec succes !' }
+        failure { echo 'Pipeline echoue -- verifiez les logs.' }
+    }
+}
