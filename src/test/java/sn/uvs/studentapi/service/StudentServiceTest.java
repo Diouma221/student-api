@@ -21,7 +21,7 @@ class StudentServiceTest {
         Student s = new Student("Diop", "Awa", "awa@uvs.sn", 14.5);
         when(repository.findAll()).thenReturn(List.of(s));
         List<Student> result = service.findAll();
-        assertEquals(99, result.size());
+        assertEquals(1, result.size());
         verify(repository).findAll();
     }
     @Test
